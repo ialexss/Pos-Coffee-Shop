@@ -13,7 +13,7 @@ const ItemProductToOrder = ({ item, updateQuantity }) => {
             {/* Detalles del producto */}
             <div className="flex flex-col items-center sm:items-start">
                 <p className="font-semibold text-sm">{item.name}</p>
-                <p className="text-gray-500 text-xs">Bs. {price}</p>
+                <p className="text-gray-500 text-xs">Bs. {item.price}</p>
             </div>
 
             {/* Controles de cantidad */}
