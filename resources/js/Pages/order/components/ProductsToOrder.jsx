@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ProductsToOrder = ({product}) => {
+const ProductsToOrder = ({product, addToCart}) => {
   return (
     <div className='bg-gray-100 max-w-sm rounded-lg p-5 shadow-sm'>
         <div className='flex gap-5'>
@@ -10,9 +10,10 @@ const ProductsToOrder = ({product}) => {
             <div className='w-3/4'>
                 <p className='font-bold'>{product.name}</p>
                 <p className='text-sm'>{product.description}</p>
+                <p className='font-semibold'>Sus. {product.price}</p>
             </div>
         </div>
-        <button className='bg-coffee text-white p-2 rounded-lg my-2 w-full'>
+        <button onClick={() => addToCart(product)} className='bg-coffee text-white p-2 rounded-lg my-2 w-full'>
             Agregar
         </button>
     </div>
