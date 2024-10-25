@@ -14,7 +14,7 @@ class ProductsSeeder extends Seeder
                 'name' => 'Espresso', 
                 'description' => 'Café fuerte y concentrado.',
                 'price' => 2.50,
-                'picture' => 'public\images\products\espresso.jpg',
+                'picture' => 'images\products\espresso.jpg',
                 'category_id' => 1
             ],
             [
