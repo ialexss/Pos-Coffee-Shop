@@ -13,11 +13,35 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        User::factory()->create([
+            'name' => 'Juan',
+            'first_lastname' => 'Perez',
+            'second_lastname' => 'Gonzalez',
+            'phone' => '123456789',
+            'birthday' => '2000-01-01', 
+            'rol' => 'Cajero',
+            'email' => 'juan@gmail.com',
+            'password' => '123456' // Encriptación de la contraseña => bcrypt('123456')
+        ]);
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Maria',
+            'first_lastname' => 'Lopez',
+            'second_lastname' => 'Martinez',
+            'phone' => '123456789',
+            'birthday' => '2001-06-01',
+            'rol' => 'Despachadora',
+            'email' => 'maria@gmail.com',
+            'password' => '123456' // Encriptación de la contraseña => bcrypt('123456')
+        ]);
+
+        // Llama a los seeders individuales
+        $this->call([
+            TypePaymentsSeeder::class,
+            StatusSeeder::class,
+            CategoriesSeeder::class,
+            ProductsSeeder::class,
         ]);
     }
 }
+
