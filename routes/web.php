@@ -11,3 +11,7 @@ Route::get('/categories', function () {
 Route::get('/products', function () {
     return inertia('products/Products');
 });
+
+Route::get('/order', function () {
+    return inertia('order/Order');
+});
