@@ -35,16 +35,19 @@ const Order = ({ products }) => {
     const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
     return (
-        <div className='flex'>
-            <div className='flex flex-wrap gap-4 w-3/4 h-max'>
+        <div className="flex flex-col md:flex-row gap-4">
+            {/* Lista de productos */}
+            <div className="flex-grow grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 overflow-y-auto md:max-h-[95vh] max-h-[50vh]">
                 {products.map((product) => (
                     <ProductsToOrder key={product.id} product={product} addToCart={addToCart} />
                 ))}
             </div>
-            <div className='w-1/4 min-h-full h-[80vh]'>
-                <div className='bg-gray-100 h-full rounded-lg p-5'>
-                    <h2 className='text-xl font-bold'>Orden</h2>
-                    <div className='flex flex-col gap-2 my-2'>
+
+            {/* Carrito */}
+            <div className="w-full md:w-1/4 min-w-[300px] h-full ">
+                <div className=" bg-gray-100 h-full rounded-lg p-5 md:min-h-[95vh] min-h-[40vh]">
+                    <h2 className="text-xl font-bold mb-4">Orden</h2>
+                    <div className="flex flex-col gap-2 my-2 ">
                         {cart.map((item) => (
                             <ItemProductToOrder
                                 key={item.id}
@@ -54,21 +57,21 @@ const Order = ({ products }) => {
                         ))}
                     </div>
                     <div>
-                        <div className='flex justify-between items-center bg-white rounded-lg w-full p-2'>
-                            <p className='font-bold'>Total</p>
-                            <p className='font-semibold'>Bs. {total.toFixed(2)}</p>
+                        <div className="flex justify-between items-center bg-white rounded-lg w-full p-2">
+                            <p className="font-bold">Total</p>
+                            <p className="font-semibold">Bs. {total.toFixed(2)}</p>
                         </div>
                     </div>
-                    <div className='my-2'>
+                    <div className="my-2">
                         <input
                             type="text"
                             id="name"
                             placeholder="Nombre"
                             required
-                            className='w-full p-2 border rounded'
+                            className="w-full p-2 border rounded"
                         />
                     </div>
-                    <button className='bg-coffee text-white p-2 rounded-lg w-full'>
+                    <button className="bg-coffee text-white p-2 rounded-lg w-full">
                         Pedir
                     </button>
                 </div>
