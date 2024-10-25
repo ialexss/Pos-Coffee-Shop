@@ -2,14 +2,14 @@ import React from 'react'
 import ProductsToOrder from './components/ProductsToOrder'
 import ItemProductToOrder from './components/ItemProductToOrder'
 
-const Order = () => {
+const Order = ({ products }) => {
+
     return (
         <div className='flex'>
             <div className='flex flex-wrap gap-4 w-3/4 h-max'>
-                <ProductsToOrder />
-                <ProductsToOrder />
-                <ProductsToOrder />
-                <ProductsToOrder />
+                {products.map(product => (
+                    <ProductsToOrder key={product.id} product={product} />
+                ))}
             </div>
             <div className=' w-1/4 min-h-full h-[80vh]'>
                 <div className='bg-gray-100 h-full rounded-lg p-5'>
