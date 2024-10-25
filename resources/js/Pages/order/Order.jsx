@@ -56,7 +56,7 @@ const Order = ({ products }) => {
                     <div>
                         <div className='flex justify-between items-center bg-white rounded-lg w-full p-2'>
                             <p className='font-bold'>Total</p>
-                            <p className='font-semibold'>Bs {total.toFixed(2)}</p>
+                            <p className='font-semibold'>Bs. {total.toFixed(2)}</p>
                         </div>
                     </div>
                     <div className='my-2'>
