@@ -79,11 +79,11 @@ const Categories = ({ categories, flash }) => {
 
     return (
         <div className="p-6">
-            <h1 className="text-2xl font-bold mb-4">Categorías</h1>
+            <h1 className="text-2xl font-bold mb-4">Gestionar Categorías</h1>
 
             {/* Sección de Crear Nueva Categoría */}
             <div className="mb-8 p-4 border rounded shadow-md">
-                <h2 className="text-xl font-semibold mb-4">Crear Nueva Categoría</h2>
+                <h2 className="text-xl font-semibold mb-4">Crear</h2>
                 <form onSubmit={handleSubmit} className="flex flex-col md:flex-row md:space-x-4">
                     <input
                         type="text"
@@ -104,7 +104,7 @@ const Categories = ({ categories, flash }) => {
                     <div className="flex md:space-x-4 mt-4 md:mt-0">
                         <button
                             type="submit"
-                            className="bg-blue-600 text-white px-4 py-2 rounded"
+                            className="bg-coffee text-white px-4 py-2 rounded"
                         >
                             {editingCategory ? 'Actualizar Categoría' : 'Crear Categoría'}
                         </button>
@@ -138,7 +138,7 @@ const Categories = ({ categories, flash }) => {
                             <td className="border border-gray-300 px-4 py-2 flex space-x-2">
                                 <button
                                     onClick={() => handleEdit(category)}
-                                    className="bg-blue-600 text-white px-4 py-1 rounded"
+                                    className="bg-coffee text-white px-4 py-1 rounded"
                                 >
                                     Editar
                                 </button>
@@ -161,7 +161,7 @@ const Categories = ({ categories, flash }) => {
                         <h3 className="text-lg font-semibold mb-4">{modalMessage}</h3>
                         <button
                             onClick={handleCloseModal}
-                            className="bg-blue-600 text-white px-4 py-2 rounded"
+                            className="bg-coffee text-white px-4 py-2 rounded"
                         >
                             Aceptar
                         </button>
