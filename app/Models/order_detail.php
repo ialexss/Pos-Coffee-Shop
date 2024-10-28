@@ -5,14 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class OrderDetail extends Model
+class order_detail extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
         'order_id',
-        'product_id',
-        'quantity', // Agregar quantity aquí para poder asignarlo masivamente
+        'product_id'
     ];
 
     // Relación con Order (muchos a uno)
