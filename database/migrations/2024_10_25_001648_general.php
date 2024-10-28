@@ -11,6 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('enterprises', function (Blueprint $table) {
+            $table->id(); // PK
+            $table->string('name'); 
+            $table->text('logo');
+            $table->timestamps(); 
+            $table->softDeletes();
+         });
         
         Schema::create('categories', function (Blueprint $table) {
             $table->id(); // PK
@@ -95,6 +102,6 @@ return new class extends Migration
         Schema::dropIfExists('users'); 
         Schema::dropIfExists('type_payments'); 
         Schema::dropIfExists('categories'); 
-         //
+        Schema::dropIfExists('enterprise');
     }
 };

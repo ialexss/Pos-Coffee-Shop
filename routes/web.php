@@ -4,7 +4,17 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\LogoController;
+use App\Http\Controllers\EnterpriseController;
 
+// Ruta para actualizar los detalles de la empresa
+Route::post('/update-cafe-details', [EnterpriseController::class, 'update']);
+
+// Ruta para obtener los detalles de la empresa
+Route::get('/get-cafe-details', [EnterpriseController::class, 'getDetails']);
+
+
+Route::post('/upload-logo', [LogoController::class, 'upload']);
 
 Route::inertia('/','Home');
 

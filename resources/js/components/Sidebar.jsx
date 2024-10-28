@@ -1,8 +1,47 @@
 import { Link } from '@inertiajs/react';
-import { BiCoffeeTogo } from "react-icons/bi";
-import { FaShoppingBag, FaThList, FaClipboardList  } from "react-icons/fa";
+import { useState, useEffect } from 'react';
+import { FaShoppingBag, FaThList, FaClipboardList, FaEdit } from "react-icons/fa";
+import EditModal from './EditModal';
 
 const Sidebar = () => {
+    const [showModal, setShowModal] = useState(false);
+    const [cafeDetails, setCafeDetails] = useState({
+        name: '', // Inicialmente vacío hasta que obtengamos los datos de la base de datos
+        logo: '',
+    });
+
+    const openModal = () => setShowModal(true);
+    const closeModal = () => setShowModal(false);
+
+    const updateCafeDetails = (newDetails) => {
+        setCafeDetails({
+            name: newDetails.name || cafeDetails.name,
+            logo: newDetails.logo || cafeDetails.logo,
+        });
+    };
+
+    // Fetch data from backend on component mount
+    useEffect(() => {
+        const fetchCafeDetails = async () => {
+            try {
+                const response = await fetch('/get-cafe-details');
+                if (response.ok) {
+                    const data = await response.json();
+                    setCafeDetails({
+                        name: data.name || "Coffee Shop", // Usa el nombre de la base de datos o un valor por defecto
+                        logo: data.logo ? `/${data.logo}` : "/storage/images/logo/logo.jpg", // Ruta desde la base de datos o una imagen por defecto
+                    });
+                } else {
+                    console.error('Error al obtener los detalles de la cafetería');
+                }
+            } catch (error) {
+                console.error('Error de conexión:', error);
+            }
+        };
+
+        fetchCafeDetails();
+    }, []);
+
     return (
         <>
             <button
@@ -35,16 +74,17 @@ const Sidebar = () => {
                 <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-coffee">
                     <ul className="space-y-2 font-medium">
                         <li>
-                            <Link
-                                href="/"
-                                className="flex items-center p-2 text-coffee rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-neutral-700 group"
-                            >
-                                <BiCoffeeTogo size={30} />
-
-                                <span className="ms-3 text-lg font-bold text-coffee">Coffee Shop</span>
+                            <Link href="/" className="flex items-center p-2">
+                                {cafeDetails.logo && (
+                                    <img
+                                        src={cafeDetails.logo}
+                                        alt="Logo de la Cafetería"
+                                        className="w-10 h-10 rounded-full"
+                                    />
+                                )}
+                                <span className="ms-3 text-lg font-bold">{cafeDetails.name}</span>
                             </Link>
                         </li>
-
                         <li>
                             <Link
                                 href="/order"
@@ -54,7 +94,6 @@ const Sidebar = () => {
                                 <span className="flex-1 ms-3 whitespace-nowrap">Ordenar</span>
                             </Link>
                         </li>
-
                         <li>
                             <Link
                                 href="/categories"
@@ -73,12 +112,22 @@ const Sidebar = () => {
                                 <span className="flex-1 ms-3 whitespace-nowrap">Productos</span>
                             </Link>
                         </li>
-
                     </ul>
+                    <div className="absolute bottom-0 left-0 w-full p-4">
+                        <button
+                            onClick={openModal}
+                            className="flex items-center p-2 w-full text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-neutral-700 group"
+                        >
+                            <FaEdit className="mr-2" />
+                            <span>Editar Nombre</span>
+                        </button>
+                    </div>
                 </div>
             </aside>
-        </>
-    )
-}
 
-export default Sidebar
+            {showModal && <EditModal closeModal={closeModal} updateCafeDetails={updateCafeDetails} />}
+        </>
+    );
+};
+
+export default Sidebar;
