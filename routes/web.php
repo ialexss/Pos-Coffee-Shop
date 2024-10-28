@@ -51,6 +51,8 @@ Route::put('/categories/{id}', [CategoriesController::class, 'update'])->name('c
 Route::delete('/categories/{id}', [CategoriesController::class, 'destroy'])->name('categories.destroy');
 
 
+// Reportes de orden
+Route::get('/order/report', [OrdersController::class, 'reportByDate'])->name('report');
 // Ruta para crear una orden
 Route::get('/order', [OrdersController::class, 'create'])->name('orders.create');
 // Rutas para órdenes

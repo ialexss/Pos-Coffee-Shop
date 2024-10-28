@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\OrderDetail; // Importa el modelo aquí
+use Carbon\Carbon;
 
 use Inertia\Inertia;
 
@@ -21,6 +22,37 @@ class OrdersController extends Controller
             'orders' => $orders,
         ]);
     }
+
+    public function reportByDate(Request $request)
+    {
+        // Validar las fechas si están presentes; en caso contrario, establecer valores predeterminados
+        $request->validate([
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+        ]);
+
+        // Si no se especifica `start_date`, usar la fecha de hoy
+        $startDate = $request->start_date 
+            ? Carbon::parse($request->start_date)->startOfDay() 
+            : Carbon::today()->startOfDay();
+
+        // Si no se especifica `end_date`, usar la fecha de hoy
+        $endDate = $request->end_date 
+            ? Carbon::parse($request->end_date)->endOfDay() 
+            : Carbon::today()->endOfDay();
+
+        // Consultar pedidos entre las fechas establecidas
+        $orders = Order::whereBetween('created_at', [$startDate, $endDate])
+                        ->with(['details'])
+                        ->get();
+
+        return Inertia::render('order/Report', [
+            'orders' => $orders,
+            'startDate' => $startDate->toDateString(),
+            'endDate' => $endDate->toDateString(),
+        ]);
+    }
+
 
     /**
      * Show the form for creating a new resource.
