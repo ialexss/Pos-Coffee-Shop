@@ -43,6 +43,14 @@ La base de datos está diseñada para manejar las siguientes entidades:
 
 La estructura de la base de datos permite una gestión eficiente de la información, asegurando que todas las relaciones entre productos, pedidos y categorías estén correctamente definidas para facilitar la administración de la aplicación.
 
+## Capturas
+
+![image](https://github.com/user-attachments/assets/f9d6ef13-d1f5-4421-82d2-af6930f7c112)
+
+![image](https://github.com/user-attachments/assets/aa426830-a5a4-4f87-852c-1a6d29512606)
+
+![image](https://github.com/user-attachments/assets/88388f31-2131-466d-a586-7bd0fdb86bc0)
+
 
 ## Contribución
 
