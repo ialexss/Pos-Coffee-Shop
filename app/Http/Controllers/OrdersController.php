@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\OrderDetail; // Importa el modelo aquí
+
 use Inertia\Inertia;
 
 class OrdersController extends Controller
@@ -36,17 +38,44 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'client_name' => 'required|string|max:255',
-            'subtotal' => 'required|numeric',
-            'type_payment_id' => 'required|exists:type_payments,id',
-            'status_id' => 'required|exists:status,id',
-            'user_id' => 'required|exists:users,id',
+        try {
+            $request->validate([
+                'client_name' => 'required|string|max:255',
+                'subtotal' => 'required|numeric',
+                'order_details' => 'required|array',
+                'order_details.*.product_id' => 'required|exists:products,id',
+                'order_details.*.quantity' => 'required|integer|min:1',
+            ]);
+    
+            $order = Order::create([
+                'client_name' => $request->client_name,
+                'subtotal' => $request->subtotal,
+                'type_payment_id' => 1,
+                'status_id' => 1,
+            ]);
+    
+            foreach ($request->order_details as $detail) {
+                OrderDetail::create([
+                    'order_id' => $order->id,
+                    'product_id' => $detail['product_id'],
+                    'quantity' => $detail['quantity'],
+                ]);
+            }
+    
+            return redirect()->route('orders.ticket', ['order' => $order->id]);
+        } catch (\Exception $e) {
+            // Log error for debugging
+            \Log::error('Error creating order: ' . $e->getMessage());
+            return response()->json(['error' => 'Error creating order.'], 500);
+        }
+    }
+
+    public function showTicket($id)
+    {
+        $order = Order::with('details.product')->findOrFail($id); // Ensure 'details' is the method name
+        return Inertia::render('order/Ticket', [
+            'order' => $order,
         ]);
-
-        $order = Order::create($request->all());
-
-        return redirect()->route('orders.index')->with('success', 'Order created successfully');
     }
 
     /**

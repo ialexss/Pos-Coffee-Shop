@@ -68,6 +68,7 @@ Route::get('/order', [OrdersController::class, 'create'])->name('orders.create')
 Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index');
 Route::get('/orders/create', [OrdersController::class, 'create'])->name('orders.create');
 Route::post('/orders', [OrdersController::class, 'store'])->name('orders.store');
+Route::get('/orders/ticket/{order}', [OrdersController::class, 'showTicket'])->name('orders.ticket');
 Route::get('/orders/{id}', [OrdersController::class, 'show'])->name('orders.show');
 Route::get('/orders/{id}/edit', [OrdersController::class, 'edit'])->name('orders.edit');
 Route::put('/orders/{id}', [OrdersController::class, 'update'])->name('orders.update');

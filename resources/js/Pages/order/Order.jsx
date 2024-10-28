@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import ProductsToOrder from './components/ProductsToOrder';
 import ItemProductToOrder from './components/ItemProductToOrder';
+import { router } from '@inertiajs/react' 
 
 const Order = ({ products }) => {
     const [cart, setCart] = useState([]);
+    const [clientName, setClientName] = useState('');
 
     // Función para agregar producto al carrito
     const addToCart = (product) => {
@@ -33,6 +35,35 @@ const Order = ({ products }) => {
 
     // Calcular el total del carrito
     const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+
+    const handleOrderSubmit = () => {
+        if (cart.length === 0) {
+            alert("Por favor, agrega productos al pedido.");
+            return;
+        }
+
+        if (!clientName) {
+            alert('Por favor, ingrese su nombre.');
+            return;
+        }
+
+        router.post('/orders', {
+            client_name: clientName,
+            subtotal: total,
+            order_details: cart.map(item => ({
+                product_id: item.id,
+                quantity: item.quantity
+            })),
+        })
+        .then(() => {
+            // Redirige o muestra un mensaje de éxito si es necesario
+            alert('Pedido realizado con éxito.');
+        })
+        .catch((error) => {
+            console.error('Error al realizar el pedido:', error.response.data);
+            alert('Hubo un problema al realizar el pedido: ' + error.response.data.error);
+        });
+    };
 
     return (
         <div className="flex flex-col md:flex-row gap-4">
@@ -67,11 +98,13 @@ const Order = ({ products }) => {
                             type="text"
                             id="name"
                             placeholder="Nombre"
+                            value={clientName}
+                            onChange={(e) => setClientName(e.target.value)}
                             required
                             className="w-full p-2 border rounded"
                         />
                     </div>
-                    <button className="bg-coffee text-white p-2 rounded-lg w-full">
+                    <button onClick={handleOrderSubmit} className="bg-coffee text-white p-2 rounded-lg w-full">
                         Pedir
                     </button>
                 </div>
