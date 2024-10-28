@@ -39,9 +39,10 @@ class CategoriesController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
         ]);
-
-        $category = Category::create($request->all());
-        return response()->json($category, 201);
+    
+        Category::create($request->all());
+    
+        return redirect()->route('categories.index')->with('message', 'Categoría creada con éxito.');
     }
 
     /**
@@ -67,14 +68,15 @@ class CategoriesController extends Controller
     public function update(Request $request, string $id)
     {
         $category = Category::findOrFail($id);
-
+    
         $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'description' => 'nullable|string',
         ]);
-
+    
         $category->update($request->all());
-        return response()->json($category);
+    
+        return redirect()->route('categories.index')->with('message', 'Categoría actualizada con éxito.');
     }
 
     /**
@@ -84,7 +86,8 @@ class CategoriesController extends Controller
     {
         $category = Category::findOrFail($id);
         $category->delete();
-        return response()->json(null, 204);
+    
+        return redirect()->route('categories.index')->with('message', 'Categoría eliminada con éxito.');
     }
 
 }
