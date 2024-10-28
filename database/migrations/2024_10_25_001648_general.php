@@ -11,6 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('enterprises', function (Blueprint $table) {
+            $table->id(); // PK
+            $table->string('name'); 
+            $table->text('logo');
+            $table->timestamps(); 
+            $table->softDeletes();
+         });
         
         Schema::create('categories', function (Blueprint $table) {
             $table->id(); // PK
@@ -61,9 +68,9 @@ return new class extends Migration
             $table->unsignedBigInteger('status_id'); 
             $table->foreign('status_id')->references('id')->on('status'); 
 
-            $table->unsignedBigInteger('user_id'); 
+            // Modificación: permitir valores nulos en user_id
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users'); 
-
 
         });
 
@@ -77,6 +84,9 @@ return new class extends Migration
             
             $table->unsignedBigInteger('product_id'); 
             $table->foreign('product_id')->references('id')->on('products'); 
+            // Cantidad de producto en el pedido
+            $table->integer('quantity')->default(1);
+
         });
 
 
@@ -95,6 +105,6 @@ return new class extends Migration
         Schema::dropIfExists('users'); 
         Schema::dropIfExists('type_payments'); 
         Schema::dropIfExists('categories'); 
-         //
+        Schema::dropIfExists('enterprises');
     }
 };

@@ -40,4 +40,10 @@ class order extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    // Define the relationship
+    public function details()
+    {
+        return $this->hasMany(OrderDetail::class); // Adjust the class name if needed
+    }
 }

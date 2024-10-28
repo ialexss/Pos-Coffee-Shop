@@ -4,31 +4,30 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\LogoController;
+use App\Http\Controllers\EnterpriseController;
 
+// Ruta para actualizar los detalles de la empresa
+Route::post('/update-cafe-details', [EnterpriseController::class, 'update']);
+
+// Ruta para obtener los detalles de la empresa
+Route::get('/get-cafe-details', [EnterpriseController::class, 'getDetails']);
+
+
+Route::post('/upload-logo', [LogoController::class, 'upload']);
 
 Route::inertia('/','Home');
 
-// Ruta para mostrar todos los productos
-Route::get('/products', [ProductsController::class, 'index'])->name('products.index');
-
-// Ruta para mostrar el formulario de creación de un nuevo producto
-Route::get('/products/create', [ProductsController::class, 'create'])->name('products.create');
-
-// Ruta para almacenar un nuevo producto
-Route::post('/products', [ProductsController::class, 'store'])->name('products.store');
-
-// Ruta para mostrar un producto específico
-Route::get('/products/{id}', [ProductsController::class, 'show'])->name('products.show');
-
-// Ruta para mostrar el formulario de edición de un producto
-Route::get('/products/{id}/edit', [ProductsController::class, 'edit'])->name('products.edit');
-
-// Ruta para actualizar un producto existente
-Route::put('/products/{id}', [ProductsController::class, 'update'])->name('products.update');
-
-// Ruta para eliminar un producto
-Route::delete('/products/{id}', [ProductsController::class, 'destroy'])->name('products.destroy');
-
+// Rutas de productos
+Route::prefix('products')->name('products.')->group(function () {
+    Route::get('/', [ProductsController::class, 'index'])->name('index');
+    Route::get('/create', [ProductsController::class, 'create'])->name('create');
+    Route::post('/', [ProductsController::class, 'store'])->name('store');
+    Route::get('/{id}', [ProductsController::class, 'show'])->name('show');
+    Route::get('/{id}/edit', [ProductsController::class, 'edit'])->name('edit');
+    Route::put('/{id}', [ProductsController::class, 'update'])->name('update');
+    Route::delete('/{id}', [ProductsController::class, 'destroy'])->name('destroy');
+});
 
 // Ruta para mostrar todas las categorías
 Route::get('/categories', [CategoriesController::class, 'index'])->name('categories.index');
@@ -58,6 +57,7 @@ Route::get('/order', [OrdersController::class, 'create'])->name('orders.create')
 Route::get('/orders', [OrdersController::class, 'index'])->name('orders.index');
 Route::get('/orders/create', [OrdersController::class, 'create'])->name('orders.create');
 Route::post('/orders', [OrdersController::class, 'store'])->name('orders.store');
+Route::get('/orders/ticket/{order}', [OrdersController::class, 'showTicket'])->name('orders.ticket');
 Route::get('/orders/{id}', [OrdersController::class, 'show'])->name('orders.show');
 Route::get('/orders/{id}/edit', [OrdersController::class, 'edit'])->name('orders.edit');
 Route::put('/orders/{id}', [OrdersController::class, 'update'])->name('orders.update');

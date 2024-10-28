@@ -11,6 +11,22 @@
     }
 }
 
+@media print {
+    body * {
+        visibility: hidden; /* Oculta todos los elementos */
+    }
+
+    #printticket, #printticket * {
+        visibility: visible; /* Muestra solo el ticket */
+    }
+
+    #printticket {
+        position: absolute; /* Asegura que el ticket se imprima sin márgenes */
+        left: 0;
+        top: 0;
+    }
+}
+
 @layer components {
     input[type="text"],
     input[type="email"],
