@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/react' 
 
 const Categories = ({ categories, flash }) => {
     const [newCategory, setNewCategory] = useState({ name: '', description: '' });
     const [editingCategory, setEditingCategory] = useState(null);
     const [showModal, setShowModal] = useState(!!flash?.message);
     const [modalMessage, setModalMessage] = useState(flash?.message || '');
+
+    // Estado para las categorías
+    const [categoriesState, setCategories] = useState(categories);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -17,27 +20,34 @@ const Categories = ({ categories, flash }) => {
 
         if (editingCategory) {
             // Actualizar categoría existente
-            Inertia.put(`/categories/${editingCategory.id}`, newCategory)
-                .then(() => {
+            router.put(`/categories/${editingCategory.id}`, newCategory, {
+                onSuccess: (page) => {
+                    // Actualiza el estado de categorías con los datos devueltos
+                    setCategories(page.props.categories);
                     setModalMessage('Categoría actualizada con éxito.');
                     setShowModal(true);
-                })
-                .catch(() => {
+                },
+                onError: () => {
                     setModalMessage('Error al actualizar la categoría.');
                     setShowModal(true);
-                });
+                },
+            });
         } else {
             // Crear nueva categoría
-            Inertia.post('/categories', newCategory)
-                .then(() => {
+            router.post('/categories', newCategory, {
+                onSuccess: (page) => {
+                    // Actualiza el estado de categorías con los datos devueltos
+                    setCategories(page.props.categories);
                     setModalMessage('Categoría creada con éxito.');
                     setShowModal(true);
-                })
-                .catch(() => {
+                },
+                onError: () => {
                     setModalMessage('Error al crear la categoría.');
                     setShowModal(true);
-                });
+                },
+            });
         }
+
         setNewCategory({ name: '', description: '' });
         setEditingCategory(null);
     };
@@ -54,15 +64,18 @@ const Categories = ({ categories, flash }) => {
 
     const handleDelete = (id) => {
         if (confirm('¿Estás seguro de que deseas eliminar esta categoría?')) {
-            Inertia.delete(`/categories/${id}`)
-                .then(() => {
+            router.delete(`/categories/${id}`, {
+                onSuccess: (page) => {
+                    // Actualiza el estado de categorías con los datos devueltos
+                    setCategories(page.props.categories);
                     setModalMessage('Categoría eliminada con éxito.');
                     setShowModal(true);
-                })
-                .catch(() => {
+                },
+                onError: () => {
                     setModalMessage('Error al eliminar la categoría.');
                     setShowModal(true);
-                });
+                },
+            });
         }
     };
 
@@ -76,6 +89,11 @@ const Categories = ({ categories, flash }) => {
             setShowModal(true);
         }
     }, [flash]);
+
+    useEffect(() => {
+        setCategories(categories);
+   }, [categories])
+
 
     return (
         <div className="p-6">
@@ -131,7 +149,7 @@ const Categories = ({ categories, flash }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {categories.map((category) => (
+                    {categoriesState.map((category) => (
                         <tr key={category.id} className="border-b">
                             <td className="border border-gray-300 px-4 py-2">{category.name}</td>
                             <td className="border border-gray-300 px-4 py-2">{category.description}</td>
