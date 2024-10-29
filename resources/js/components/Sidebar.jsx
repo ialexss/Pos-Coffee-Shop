@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
-import { FaShoppingBag, FaThList, FaClipboardList, FaEdit, FaPrint  } from "react-icons/fa";
+import { FaShoppingBag, FaThList, FaClipboardList, FaEdit, FaPrint } from "react-icons/fa";
 import EditModal from './EditModal';
 
 const Sidebar = () => {
@@ -79,10 +79,10 @@ const Sidebar = () => {
                                     <img
                                         src={cafeDetails.logo}
                                         alt="Logo de la Cafetería"
-                                        className="w-10 h-10 rounded-full"
+                                        className="w-16 h-16 rounded-full shadow-lg border border-4 border-coffee"
                                     />
                                 )}
-                                <span className="ms-3 text-lg font-bold">{cafeDetails.name}</span>
+                                <span className="ms-3 text-base font-bold">{cafeDetails.name}</span>
                             </Link>
                         </li>
                         <li>
@@ -124,6 +124,7 @@ const Sidebar = () => {
                         </li>
                     </ul>
                     <div className="absolute bottom-0 left-0 w-full p-4">
+
                         <button
                             onClick={openModal}
                             className="flex items-center p-2 w-full text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-neutral-700 group"
@@ -131,6 +132,14 @@ const Sidebar = () => {
                             <FaEdit className="mr-2" />
                             <span>Editar Nombre</span>
                         </button>
+
+                        <Link
+                            href={route('logout')}
+                            method='POST'
+                            className="rounded-md text-sm mx-2 text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        >
+                            Log Out
+                        </Link>
                     </div>
                 </div>
             </aside>
