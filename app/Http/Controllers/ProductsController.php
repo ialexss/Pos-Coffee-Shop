@@ -41,7 +41,7 @@ class ProductsController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
-            'picture' => 'required|image|max:2048', // Updated to handle file uploads
+            'picture' => 'required|image|max:2048', // Validación para archivo de imagen
             'category_id' => 'required|exists:categories,id'
         ], [
             'name.required' => 'El nombre del producto es obligatorio.',
@@ -50,20 +50,21 @@ class ProductsController extends Controller
             'picture.image' => 'La imagen debe ser un archivo de imagen.',
             'picture.max' => 'La imagen no debe exceder los 2MB.'
         ]);
-        
-        // Store the uploaded picture
-        $path = $request->file('picture')->store('products', 'public'); // Store in 'public/products' directory
     
-        // Create the product with the image path
+        // Almacenar la imagen y obtener el nombre del archivo
+        $filename = $request->name . '.jpg';
+        $request->file('picture')->move(public_path('images/products'), $filename);
+    
+        // Crear el producto con la ruta relativa de la imagen
         $product = Product::create([
             'name' => $request->name,
             'description' => $request->description,
             'price' => $request->price,
-            'picture' => $path, // Store the path of the uploaded image
+            'picture' => 'images/products/' . $filename, // Ruta relativa
             'category_id' => $request->category_id,
         ]);
     
-        return redirect()->route('products.index')->with('success', 'Product created successfully');
+        return redirect()->route('products.index')->with('success', 'Producto creado exitosamente');
     }
     
     /**
@@ -93,35 +94,38 @@ class ProductsController extends Controller
      */
     public function update(Request $request, string $id)
     {
+
         $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'price' => 'required|numeric',
-            'picture' => 'nullable|image|max:2048', // Make it optional for updates
             'category_id' => 'required|exists:categories,id'
         ]);
     
         $product = Product::findOrFail($id);
     
-        // Handle the picture upload
+        // Manejar la carga de la nueva imagen si existe
         if ($request->hasFile('picture')) {
-            // Delete the old picture if necessary (optional)
-            // Storage::delete($product->picture);
+            // Eliminar la imagen anterior si existe
+            if ($product->picture && file_exists(public_path($product->picture))) {
+                unlink(public_path($product->picture));
+            }
     
-            // Store the new picture
-            $path = $request->file('picture')->store('products', 'public');
-            $product->picture = $path; // Update the picture path
+            // Guardar la nueva imagen y actualizar la ruta relativa
+            $filename = $request->name . '.jpg';
+            $request->file('picture')->move(public_path('images/products'), $filename);
+            $product->picture = 'images/products/' . $filename; // Ruta relativa
         }
     
-        // Update other fields
+        // Actualizar otros campos
         $product->name = $request->name;
         $product->description = $request->description;
         $product->price = $request->price;
         $product->category_id = $request->category_id;
     
-        $product->save(); // Save the changes
+        $product->save(); // Guardar los cambios
     
-        return redirect()->route('products.index')->with('success', 'Product updated successfully');
+        return redirect()->route('products.index')->with('success', 'Producto actualizado exitosamente');
     }
     
 

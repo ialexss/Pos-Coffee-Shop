@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { router } from '@inertiajs/react' 
+import { router } from '@inertiajs/react'
 
 const ProductForm = ({ product = {}, categories = [], onClose, onProductChange }) => {
     const [name, setName] = useState('');
@@ -28,27 +28,52 @@ const ProductForm = ({ product = {}, categories = [], onClose, onProductChange }
         setCategoryId('');
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const data = new FormData();
-        data.append('name', name);
-        data.append('description', description);
-        data.append('price', price);
-        data.append('category_id', categoryId);
+    const convertImageToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                resolve(reader.result); // Esto dará un string en Base64
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    };
 
-        if (picture) {
-            data.append('picture', picture);
-        }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        // Crear el objeto con los datos a enviar
+        const data = {
+            name,
+            description,
+            price,
+            category_id: categoryId,
+        };
 
         // Lógica para agregar o editar
         if (product && product.id) {
+            console.log(`Updating product with ID: ${product.id}`); // Verifica el ID
             router.put(`/products/${product.id}`, data, {
                 onSuccess: (response) => {
                     onProductChange(response.props.product); // Pasar el producto actualizado
                 },
+                onError: (errors) => {
+                    console.error('Error updating product:', errors); // Manejo de errores
+                },
             });
         } else {
-            router.post('/products', data, {
+            const newProd = new FormData();
+            newProd.append('name', name);
+            newProd.append('description', description);
+            newProd.append('price', price);
+            newProd.append('category_id', categoryId);
+        
+            if (picture) {
+                newProd.append('picture', picture);
+            }
+        
+            router.post('/products', newProd, {
                 onSuccess: (response) => {
                     onProductChange(response.props.product); // Pasar el nuevo producto
                 },
