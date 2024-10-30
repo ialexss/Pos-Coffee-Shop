@@ -92,6 +92,7 @@ La Cafetería Web App mejora la eficiencia operativa, permite una administració
 ###### 📚 Bibliografia
 - https://laravel.com/docs/11.x/readme
 - https://react.dev/learn
+- https://inertiajs.com/
 - https://chat.openai.com/
 
 ###### Capturas
