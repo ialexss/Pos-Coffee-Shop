@@ -30,6 +30,7 @@ El proyecto fue desarrollado siguiendo prácticas ágiles, permitiendo iteracion
 La estructura de la base de datos incluye las siguientes tablas principales:
 
 ###### Diagrama de Tablas 📊
+![Diagrama BD](images/diagrama-cafeteria.png)
 
 
 +------------------+        +------------------+       +------------------+
