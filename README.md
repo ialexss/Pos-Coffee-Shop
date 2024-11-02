@@ -32,41 +32,6 @@ La estructura de la base de datos incluye las siguientes tablas principales:
 ###### Diagrama de Tablas 📊
 ![Diagrama BD](public/images/logo/diagrama-cafeteria.jpg)
 
-
-+------------------+        +------------------+       +------------------+
-|   Enterprises    |        |     Categories   |       |     Products     |
-+------------------+        +------------------+       +------------------+
-| id (PK)          |        | id (PK)          |       | id (PK)          |
-| name             |        | name             |       | name             |
-| logo             |        | description      |       | description      |
-| created_at       |        | created_at       |       | price            |
-| updated_at       |        | updated_at       |       | picture          |
-| deleted_at       |        | deleted_at       |       | category_id (FK) |
-+------------------+        +------------------+       +------------------+
-
-+------------------+        +------------------+       +------------------+
-|    Orders        |        |   Order_Details  |       |   Type_Payments  |
-+------------------+        +------------------+       +------------------+
-| id (PK)          |        | id (PK)          |       | id (PK)          |
-| client_name      |        | order_id (FK)    |       | name             |
-| subtotal         |        | product_id (FK)  |       | created_at       |
-| created_at       |        | created_at       |       | updated_at       |
-| updated_at       |        | updated_at       |       | deleted_at       |
-| type_payment_id  |        | deleted_at       |       +------------------+
-| status_id (FK)   |        +------------------+
-| user_id (FK)     |
-+------------------+
-
-+------------------+        
-|     Status       |        
-+------------------+        
-| id (PK)          |        
-| status           |        
-| created_at       |        
-| updated_at       |        
-| deleted_at       |        
-+------------------+
-
 ###### 📑 Características Principales 
 **🔒 Login**: Acceso seguro para usuarios autorizados.
 **📋 Gestión de Pedidos**: Permite agregar, actualizar o eliminar productos en un pedido.
