@@ -1,14 +1,17 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
-import { FaShoppingBag, FaThList, FaClipboardList, FaEdit, FaPrint } from "react-icons/fa";
+import { FaShoppingBag, FaThList, FaClipboardList, FaEdit, FaPrint, FaUserPlus } from "react-icons/fa"; // Agrega FaUserPlus
 import EditModal from './EditModal';
 
 const Sidebar = () => {
     const [showModal, setShowModal] = useState(false);
     const [cafeDetails, setCafeDetails] = useState({
-        name: '', // Inicialmente vacío hasta que obtengamos los datos de la base de datos
+        name: '',
         logo: '',
     });
+
+    const { props } = usePage();
+    const isAuthenticated = props.auth.user !== null; // Verificar si el usuario está autenticado
 
     const openModal = () => setShowModal(true);
     const closeModal = () => setShowModal(false);
@@ -20,7 +23,6 @@ const Sidebar = () => {
         });
     };
 
-    // Fetch data from backend on component mount
     useEffect(() => {
         const fetchCafeDetails = async () => {
             try {
@@ -28,8 +30,8 @@ const Sidebar = () => {
                 if (response.ok) {
                     const data = await response.json();
                     setCafeDetails({
-                        name: data.name || "Coffee Shop", // Usa el nombre de la base de datos o un valor por defecto
-                        logo: data.logo ? `/${data.logo}` : "/storage/images/logo/logo.jpg", // Ruta desde la base de datos o una imagen por defecto
+                        name: data.name || "Coffee Shop",
+                        logo: data.logo ? `/${data.logo}` : "/storage/images/logo/logo.jpg",
                     });
                 } else {
                     console.error('Error al obtener los detalles de la cafetería');
@@ -124,6 +126,13 @@ const Sidebar = () => {
                         </li>
                     </ul>
                     <div className="absolute bottom-0 left-0 w-full p-4">
+                        <Link
+                            href={isAuthenticated ? route('register') : "/login"} // Redirige al login si no está autenticado
+                            className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-neutral-700 group"
+                        >
+                            <FaUserPlus className="mr-2" /> {/* Icono para registrar */}
+                            <span>Registrar usuario</span>
+                        </Link>
 
                         <button
                             onClick={openModal}
@@ -133,13 +142,24 @@ const Sidebar = () => {
                             <span>Editar Nombre</span>
                         </button>
 
+                        <br />
                         <Link
-                            href={route('logout')}
-                            method='POST'
-                            className="rounded-md text-sm mx-2 text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            href={isAuthenticated ? route('logout') : "/login"} // Redirige al login si no está autenticado, al logout si está autenticado
+                            method={isAuthenticated ? 'POST' : 'GET'} // Usa POST para cerrar sesión, GET para iniciar sesión
+                            className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-neutral-700 group"
                         >
-                            Log Out
+                            {isAuthenticated ? (
+                                <>                                    
+                                    <span><b>Cerrar sesión</b></span>
+                                </>
+                            ) : (
+                                <>                                    
+                                    <span><b>Iniciar sesión</b></span>
+                                </>
+                            )}
                         </Link>
+
+                        
                     </div>
                 </div>
             </aside>
