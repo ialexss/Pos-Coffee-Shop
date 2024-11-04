@@ -35,6 +35,17 @@ class DatabaseSeeder extends Seeder
             'password' => '123456' // Encriptación de la contraseña => bcrypt('123456')
         ]);
 
+        User::factory()->create([
+            'name' => 'user',
+            'first_lastname' => 'lastname',
+            'second_lastname' => 'lastname',
+            'phone' => '123456789',
+            'birthday' => '2000-01-01', 
+            'rol' => 'Cajero',
+            'email' => 'admin@coffeeshop.com',
+            'password' => 'admin' // Encriptación de la contraseña => bcrypt('admin')
+        ]);
+
         // Llama a los seeders individuales
         $this->call([
             TypePaymentsSeeder::class,

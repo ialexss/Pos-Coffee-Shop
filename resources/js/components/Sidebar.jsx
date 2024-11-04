@@ -126,21 +126,27 @@ const Sidebar = () => {
                         </li>
                     </ul>
                     <div className="absolute bottom-0 left-0 w-full p-4">
-                        <Link
-                            href={isAuthenticated ? route('register') : "/login"} // Redirige al login si no está autenticado
-                            className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-neutral-700 group"
-                        >
-                            <FaUserPlus className="mr-2" /> {/* Icono para registrar */}
-                            <span>Registrar usuario</span>
-                        </Link>
 
-                        <button
-                            onClick={openModal}
-                            className="flex items-center p-2 w-full text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-neutral-700 group"
-                        >
-                            <FaEdit className="mr-2" />
-                            <span>Editar Nombre</span>
-                        </button>
+                        {isAuthenticated &&
+                            <>
+                                <Link
+                                    href={isAuthenticated ? route('register') : "/login"} // Redirige al login si no está autenticado
+                                    className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-neutral-700 group"
+                                >
+                                    <FaUserPlus className="mr-2" /> {/* Icono para registrar */}
+                                    <span>Registrar usuario</span>
+                                </Link>
+
+                                <button
+                                    onClick={openModal}
+                                    className="flex items-center p-2 w-full text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-neutral-700 group"
+                                >
+                                    <FaEdit className="mr-2" />
+                                    <span>Editar Nombre</span>
+                                </button>
+                            </>
+                        }
+
 
                         <br />
                         <Link
@@ -149,17 +155,17 @@ const Sidebar = () => {
                             className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-neutral-700 group"
                         >
                             {isAuthenticated ? (
-                                <>                                    
+                                <>
                                     <span><b>Cerrar sesión</b></span>
                                 </>
                             ) : (
-                                <>                                    
+                                <>
                                     <span><b>Iniciar sesión</b></span>
                                 </>
                             )}
                         </Link>
 
-                        
+
                     </div>
                 </div>
             </aside>

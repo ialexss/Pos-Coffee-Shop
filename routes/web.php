@@ -26,8 +26,8 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('order/Order');
-})->middleware(['auth', 'verified'])->name('dashboard');
+    return Inertia::render('Home');
+})->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::prefix('products')->name('products.')->group(function () {
